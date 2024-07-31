@@ -60,6 +60,15 @@ export const LogoFrame = styled.div`
   flex-direction: column;
   gap: 4rem;
 `;
+
+const Sizeup = keyframes`
+  0%, 100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(2);
+  }
+`;
 export const LogoContainr = styled.div`
   width: 100%;
   height: 40%;
@@ -69,6 +78,29 @@ export const LogoContainr = styled.div`
   align-items: center;
   justify-content: center;
   z-index: 2;
+  position: relative;
+`;
+
+export const SparkleStar = styled.img`
+  position: absolute;
+  z-index: 3;
+  animation: ${Sizeup} infinite;
+
+  &:nth-child(1) {
+    left: 5px;
+    top: 100px;
+    animation-duration: 2s;
+  }
+  &:nth-child(2) {
+    right: 5px;
+    top: 2px;
+    animation-duration: 4s;
+  }
+  &:nth-child(3) {
+    right: 13px;
+    top: 140px;
+    animation-duration: 3s;
+  }
 `;
 
 export const LoginContainer = styled.div`
@@ -131,4 +163,41 @@ export const SelectView = styled.div`
   flex-direction: column;
   gap: 1rem;
   margin-top: 25%;
+`;
+
+//별똥별
+const shootingStar = keyframes`
+  0% {
+    opacity: 0.3;
+    transform: translate3d(100vw, -100vh, 0)  rotate(45deg);
+  }
+  10% {
+    opacity: 1;
+  }
+  
+  100% {
+    opacity: 0;
+    transform: translate3d(-50vw, 20vh, 0)  rotate(45deg);
+  }
+`;
+
+export const ShootingStar = styled.div`
+  position: absolute;
+  width: 2px;
+  height: 90px;
+  background: linear-gradient(45deg, #fff, rgba(255, 255, 255, 0));
+  opacity: 0;
+  animation: ${shootingStar} 3s linear 2;
+
+  &:nth-child(1) {
+    top: -20%;
+    left: 60%;
+    animation-delay: 0s;
+  }
+
+  &:nth-child(2) {
+    top: -10%;
+    left: 80%;
+    animation-delay: 7s;
+  }
 `;
