@@ -3,8 +3,16 @@ import BACKGROUND from "../../assets/loginBackground.svg";
 import { ROUTINE_CATEGORY, TITLE } from "../../constants/Category/data";
 import { Box } from "../../components/common/Box/Box";
 import { Button } from "../../components/common/Button/Button";
+import { getUserStatus } from "../../apis/signup";
+import { useEffect } from "react";
 
 export const SelectRoutine = () => {
+  const getData = async () => {
+    await getUserStatus();
+  };
+  useEffect(() => {
+    getData();
+  }, []);
   return (
     <S.Layout
       style={{
