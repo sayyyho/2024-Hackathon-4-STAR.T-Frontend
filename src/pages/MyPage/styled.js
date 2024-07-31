@@ -25,6 +25,25 @@ export const Layout = styled.div`
     font-size: 1.2rem;
     border-bottom: 1px solid black;
     padding-bottom: 1rem;
+    color: inherit;
+    font: inherit;
+    cursor: pointer;
+    text-decoration: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+
+    &:focus {
+      outline: none;
+    }
+
+    &:active {
+      color: inherit; /* 색상 변화 없도록 설정 */
+    }
+
+    &:visited {
+      color: inherit; /* 방문 후 색상 변화 없도록 설정 */
+    }
   }
 
   .emptytext {

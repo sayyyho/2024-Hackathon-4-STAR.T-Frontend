@@ -3,6 +3,7 @@ import * as S from "./style";
 import LOGO_BACKGROUND from "../../assets/logoContainer.svg";
 import KAKAO from "../../assets/images/kakaoLogin.svg";
 import { TITLE_TEXT } from "../../constants/Text/title";
+import Star from "../../assets/images/loginStar.svg";
 import GradientBackground from "../../components/GradientBackground/GradientBackground";
 export const Login = () => {
   const BASE_URL = import.meta.env.VITE_BASE_URL;
@@ -10,6 +11,9 @@ export const Login = () => {
   return (
     <S.Layout>
       <GradientBackground showContent={showContent} />
+      <S.ShootingStar />
+      <S.ShootingStar />
+      <S.ShootingStar />
       <S.LogoFrame>
         <S.TitleFrame>
           <S.TitleText>{TITLE_TEXT[0]}</S.TitleText>
@@ -17,6 +21,9 @@ export const Login = () => {
         </S.TitleFrame>
 
         <S.LogoContainr>
+          <S.SparkleStar src={Star} />
+          <S.SparkleStar src={Star} />
+          <S.SparkleStar src={Star} />
           <S.ImageFame src={LOGO_BACKGROUND} />
         </S.LogoContainr>
       </S.LogoFrame>
