@@ -77,6 +77,7 @@ const ThemePage = () => {
             <MainRoutineBox
               src={item.image || item.video_url}
               key={item.id}
+              id={item.id}
               title={item.title}
               subtitle={item.sub_title}
               content={item.content}

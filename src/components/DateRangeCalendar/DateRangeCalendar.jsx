@@ -135,6 +135,11 @@ const DateRangeCalendar = () => {
     } else {
       console.log("No date selected");
     }
+
+    setSelectedStartDate(formattedStartDate);
+    setSelectedEndDate(formattedEndDate);
+    setIsCalendarVisible(false);
+    setIsCheckVisible(true);
   };
 
   return (
