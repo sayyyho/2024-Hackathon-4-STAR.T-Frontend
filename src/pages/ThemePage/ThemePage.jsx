@@ -19,16 +19,13 @@ import {
 const ThemePage = () => {
   const startDay = useRecoilValue(routineStart);
   const endDay = useRecoilValue(routineEnd);
-  console.log(startDay, endDay);
   const [isCalendarVisible, setIsCalendarVisible] =
     useRecoilState(CalendarVisible);
   const [isCheckVisible, setIsCheckVisible] = useRecoilState(CheckVisible);
   const setID = useSetRecoilState(registerID);
   const { theme } = useMoveonTheme();
 
-  console.log("theme:", theme);
   const themeData = theme && theme.data ? theme.data : null;
-  console.log("themeData:", themeData);
   const [term, setTerm] = useState(0);
 
   const handlePlusButtonClick = (routineId) => {

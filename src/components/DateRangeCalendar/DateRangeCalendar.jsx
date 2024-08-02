@@ -103,7 +103,6 @@ const DateRangeCalendar = () => {
           formattedStartDate,
           formattedEndDate,
           id
-          // 안되면 전역상태로 id관리 하기
         );
 
         console.log(response);

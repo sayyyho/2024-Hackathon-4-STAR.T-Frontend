@@ -3,10 +3,21 @@ import * as S from "./styled";
 import { Header } from "../../components/common/Header/Header";
 import DiceBackground from "../../assets/DiceBackground.svg";
 import star1 from "../../assets/star1.svg";
-import { useNavigate } from "react-router-dom";
 import GradientBackground from "../../components/GradientBackground/GradientBackground";
 import { getRandomRoutine } from "../../apis/random";
-// 이미지 배열 (실제 이미지 URL 또는 소스 파일을 사용)
+import Modal from "../../components/Modal/Modal";
+import { CheckUp } from "../../components/CheckUp/CheckUp";
+import DateRangeCalendar from "../../components/DateRangeCalendar/DateRangeCalendar";
+import { useSetRecoilState, useRecoilState, useRecoilValue } from "recoil";
+import {
+  routineStart,
+  routineEnd,
+  CalendarVisible,
+  CheckVisible,
+  registerID,
+} from "../../stores/routineRegister";
+
+// 이미지 배열
 const images = [
   "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTy1Qh1wxZdS3QDFdjpSPK0FysKm0EHjxmsXg&s",
   "https://i.namu.wiki/i/n2LztcrML9hzPww_iKNeMuh34vg48dkmZmGuMEC_e-DSpNoPGwch9nR9FZz9WfVx6nvv5aSDxqlxEG8iA9tcLQ.webp",
@@ -15,54 +26,73 @@ const images = [
 ];
 
 export const RandomDice = () => {
-  const navigate = useNavigate();
   const [currentImage, setCurrentImage] = useState(DiceBackground);
   const [rolling, setRolling] = useState(false);
   const [data, setData] = useState({});
   const [showContent, setShowContent] = useState(false);
+  const setID = useSetRecoilState(registerID);
+  const startDay = useRecoilValue(routineStart);
+  const endDay = useRecoilValue(routineEnd);
+  const [isCheckVisible, setIsCheckVisible] = useRecoilState(CheckVisible);
+  const [isCalendarVisible, setIsCalendarVisible] =
+    useRecoilState(CalendarVisible);
+  const [term, setTerm] = useState(null);
   const [containerStyle, setContainerStyle] = useState({
     justifyContent: "center",
     alignItems: "center",
   });
+
+  // 화면 크기 조정에 따른 스타일 변경
   useEffect(() => {
     const handleResize = () => {
-      if (window.innerWidth > 768) {
-        setContainerStyle({
-          justifyContent: "center",
-          alignItems: "center",
-        });
-      } else {
-        setContainerStyle({
-          justifyContent: "flex-start", // 예시: 작은 화면에서는 flex-start로 정렬
-          alignItems: "center",
-        });
-      }
+      setContainerStyle({
+        justifyContent: window.innerWidth > 768 ? "center" : "flex-start",
+        alignItems: "center",
+      });
     };
 
     window.addEventListener("resize", handleResize);
     handleResize();
-
     return () => window.removeEventListener("resize", handleResize);
   }, []);
 
+  // 루틴 기간 계산
+  useEffect(() => {
+    if (startDay && endDay) {
+      const startDate = new Date(startDay);
+      const endDate = new Date(endDay);
+      const differenceInTime = endDate.getTime() - startDate.getTime();
+      const differenceInDays = differenceInTime / (1000 * 3600 * 24) + 1;
+      setTerm(differenceInDays);
+    }
+  }, [startDay, endDay]);
+
+  // 날짜 포맷팅
+  const formatDate = (date) => {
+    const dateObj = typeof date === "string" ? new Date(date) : date;
+    const year = dateObj.getFullYear();
+    const month = String(dateObj.getMonth() + 1).padStart(2, "0");
+    const day = String(dateObj.getDate()).padStart(2, "0");
+    return `${year}.${month}.${day}`;
+  };
+
+  // 주사위 굴리기 로직
   useEffect(() => {
     let interval;
     if (rolling) {
       interval = setInterval(() => {
         const randomImage = images[Math.floor(Math.random() * images.length)];
         setCurrentImage(randomImage);
-      }, 100); //0.1초 마다 이미지 변경
+      }, 100);
 
-      // 3초 후에 이미지 결정
       setTimeout(async () => {
         clearInterval(interval);
         try {
           const res = await getRandomRoutine();
-          const randomImage = res.image;
-          setCurrentImage(randomImage);
+          setCurrentImage(res.image);
           setData(res);
         } catch (err) {
-          throw err;
+          console.error("Failed to fetch random routine:", err);
         }
         setRolling(false);
         setShowContent(true);
@@ -76,13 +106,22 @@ export const RandomDice = () => {
     setShowContent(false);
   };
 
-  const textColor = !showContent ? "black" : "white";
-
-  //다시 돌리기 기능
-  const handleAgainClick = () => {
-    navigate("/randomDice");
-    window.location.reload();
+  const handleCloseModal = () => {
+    setIsCalendarVisible(false);
+    setIsCheckVisible(false);
   };
+
+  const handleAgainClick = () => {
+    setRolling(true);
+    setShowContent(false);
+  };
+
+  const handleAddCalendar = () => {
+    setIsCalendarVisible(true);
+    setID(data.id);
+  };
+
+  const textColor = !showContent ? "black" : "white";
 
   return (
     <S.Layout>
@@ -100,11 +139,7 @@ export const RandomDice = () => {
           alignItems: containerStyle.alignItems,
         }}
       >
-        <S.Gif
-          style={{
-            backgroundImage: `url(${currentImage})`,
-          }}
-        />
+        <S.Gif style={{ backgroundImage: `url(${currentImage})` }} />
         {!showContent ? (
           <div className="coment">
             <div className="line">당신의 건강한 생활을 도와줄</div>
@@ -120,7 +155,7 @@ export const RandomDice = () => {
           <S.ThrowButton onClick={handleRollClick}>주사위 돌리기</S.ThrowButton>
         ) : (
           <div className="buttons">
-            <button className="Add" onClick={() => navigate("/calendar")}>
+            <button className="Add" onClick={handleAddCalendar}>
               내 캘린더에 추가
             </button>
             <button className="Again" onClick={handleAgainClick}>
@@ -129,6 +164,21 @@ export const RandomDice = () => {
           </div>
         )}
       </S.Container>
+      {isCalendarVisible && (
+        <Modal onClose={handleCloseModal}>
+          <DateRangeCalendar />
+        </Modal>
+      )}
+      {isCheckVisible && (
+        <Modal onClose={handleCloseModal}>
+          <CheckUp
+            startDay={formatDate(startDay)}
+            endDay={formatDate(endDay)}
+            term={term}
+            onClose={() => setIsCheckVisible(false)}
+          />
+        </Modal>
+      )}
     </S.Layout>
   );
 };
