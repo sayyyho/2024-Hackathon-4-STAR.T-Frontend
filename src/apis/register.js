@@ -10,6 +10,6 @@ export const postRoutineRegister = async (start_date, end_date, id) => {
     return res;
   } catch (err) {
     console.log(err);
-    throw err;
+    return false;
   }
 };

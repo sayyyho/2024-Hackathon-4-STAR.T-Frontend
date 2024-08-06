@@ -7,6 +7,7 @@ import { getRandomRoutine } from "@/apis/random";
 import Modal from "@/components/Modal/Modal";
 import { CheckUp } from "@/components/CheckUp/CheckUp";
 import DateRangeCalendar from "@/components/DateRangeCalendar/DateRangeCalendar";
+import { ErrorAlert } from "@/components/common/ErorrAlert/ErrorAlert";
 import { useSetRecoilState, useRecoilState, useRecoilValue } from "recoil";
 import {
   routineStart,
@@ -18,9 +19,11 @@ import {
 import { format } from "date-fns";
 import { addHours } from "date-fns";
 import { images } from "@/constants/RandomDice/dummy";
+import { modalStatus } from "@/stores/calendar";
 
 export const RandomDice = () => {
   const [currentImage, setCurrentImage] = useState(DiceBackground);
+  const showModal = useRecoilValue(modalStatus);
   const [rolling, setRolling] = useState(false);
   const [data, setData] = useState({});
   const [showContent, setShowContent] = useState(false);
@@ -125,6 +128,7 @@ export const RandomDice = () => {
   contentArray.shift();
   return (
     <S.Layout>
+      <ErrorAlert show={showModal} />
       <GradientBackground showContent={showContent} />
       <Header
         $margin={"1rem 0 0 0"}

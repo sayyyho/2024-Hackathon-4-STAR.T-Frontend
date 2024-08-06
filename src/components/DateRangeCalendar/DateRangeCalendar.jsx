@@ -7,10 +7,12 @@ import {
   CheckVisible,
   registerID,
 } from "../../stores/routineRegister";
-import { useRecoilState, useRecoilValue } from "recoil";
+import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
 import { postRoutineRegister } from "../../apis/register";
 import { format } from "date-fns";
 import { addHours } from "date-fns";
+import { modalStatus } from "@/stores/calendar";
+const setShowModal = useSetRecoilState(modalStatus);
 
 const DateRangeCalendar = forwardRef((ref) => {
   const [currentDate, setCurrentDate] = useState(new Date());
@@ -20,7 +22,6 @@ const DateRangeCalendar = forwardRef((ref) => {
   const [, setIsCalendarVisible] = useRecoilState(CalendarVisible);
   const [, setIsCheckVisible] = useRecoilState(CheckVisible);
   const id = useRecoilValue(registerID);
-
   const timeZone = "Asia/Seoul";
   const getZonedDate = (date) => addHours(new Date(date), 9);
 
@@ -125,13 +126,13 @@ const DateRangeCalendar = forwardRef((ref) => {
             }
           }, 2000); //
         } else {
-          console.error("Failed to register routine:", response.statusText);
+          setShowModal(true);
         }
       } catch (error) {
-        console.error("Error during API call:", error);
+        setShowModal(true);
       }
     } else {
-      console.log("No date selected");
+      setShowModal(true);
     }
   };
 
