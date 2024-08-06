@@ -7,6 +7,7 @@ import Modal from "../../components/Modal/Modal";
 import DateRangeCalendar from "../../components/DateRangeCalendar/DateRangeCalendar";
 import { CheckUp } from "../../components/CheckUp/CheckUp";
 import { useRecoilState, useSetRecoilState } from "recoil";
+import { Loading } from "../Loading/Loading";
 import {
   routineStart,
   routineEnd,
@@ -51,7 +52,7 @@ const ThemePage = () => {
   }, [startDay, endDay]);
 
   if (!themeData) {
-    return <p>데이터를 불러오는 중입니다...</p>; // theme이 null인 경우 처리
+    return <Loading />; // theme이 null인 경우 처리
   }
 
   const formatDate = (date) => {
@@ -85,7 +86,7 @@ const ThemePage = () => {
             />
           ))
         ) : (
-          <p>데이터를 불러오는 중입니다...</p>
+          <Loading />
         )}
       </S.RoutineBoxContainer>
       {isCalendarVisible && (

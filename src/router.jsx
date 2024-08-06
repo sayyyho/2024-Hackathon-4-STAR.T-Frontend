@@ -14,7 +14,6 @@ import SearchPage from "./pages/SearchPage/SearchPage";
 import MyPage from "./pages/MyPage/MyPage";
 import SubCategoryPage from "./pages/SubCategoryPage/SubCategoryPage";
 import { SearchResultP } from "./pages/SearchPage/SearchResultP";
-import { Test } from "./pages/TestPage/Test";
 import { NotFound } from "./pages/NotFound/NotFount";
 import { AgreePage } from "./pages/AgreePage/AgreePage";
 import { Loading } from "./pages/Loading/Loading";
@@ -85,10 +84,6 @@ const router = createBrowserRouter([
         path: "/share/:starid",
         element: <SharePage />,
         loader: loader,
-      },
-      {
-        path: "/test",
-        element: <Test />,
       },
       {
         path: "/search/data/:data",

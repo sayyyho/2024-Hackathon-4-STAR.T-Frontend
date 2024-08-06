@@ -52,7 +52,7 @@ const ModalContainer = styled.div`
   }
 `;
 
-export const ErrorAlert = ({ show, onClose }) => (
+export const ErrorAlert = ({ show }) => (
   <CSSTransition in={show} timeout={500} classNames="modal" unmountOnExit>
     <ModalLayout>
       <ModalContainer state={show ? "entering" : "exiting"}>
