@@ -8,8 +8,6 @@ import Modal from "../../components/Modal/Modal";
 import { CheckUp } from "../../components/CheckUp/CheckUp";
 import { StarHeader } from "../../components/StarHeader/StarHeader";
 import { useRecoilValue, useRecoilState, useSetRecoilState } from "recoil";
-import { ErrorAlert } from "@/components/common/ErorrAlert/ErrorAlert";
-import { modalStatus } from "@/stores/calendar";
 import {
   routineStart,
   routineEnd,
@@ -23,7 +21,6 @@ import { Loading } from "../Loading/Loading";
 
 const StarPage = () => {
   const { starP } = useMoveonStarP();
-  const showModal = useRecoilValue(modalStatus);
   const startDay = useRecoilValue(routineStart);
   const endDay = useRecoilValue(routineEnd);
   const [isCalendarVisible, setIsCalendarVisible] =
@@ -69,7 +66,6 @@ const StarPage = () => {
   return (
     <>
       <S.Header>
-        <ErrorAlert show={showModal} />
         <S.BannerImage src={starData.photo} alt={starData.name} />
         <S.BannerTitle>
           <div>{starData.name}</div>
@@ -96,7 +92,7 @@ const StarPage = () => {
             />
           ))
         ) : (
-          <Loading />
+          <p>데이터를 불러오는 중입니다...</p>
         )}
       </S.RoutineBoxContainer>
       {isCalendarVisible && (
@@ -110,10 +106,7 @@ const StarPage = () => {
             startDay={formatDate(startDay)}
             endDay={formatDate(endDay)}
             term={term}
-            onClose={() => {
-              setIsCheckVisible(false);
-              window.location.reload();
-            }}
+            onClose={() => setIsCheckVisible(false)}
           />
         </Modal>
       )}
