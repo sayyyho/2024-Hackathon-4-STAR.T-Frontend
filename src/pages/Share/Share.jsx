@@ -33,13 +33,16 @@ const SharePage = () => {
 
   const handleCapture = async () => {
     setIsButtonVisible(false);
-    try {
-      const canvas = await html2canvas(captureRef.current, { useCORS: true });
-      await captureScreenshot(canvas);
-    } catch (error) {
-    } finally {
-      setIsButtonVisible(true);
-    }
+    setTimeout(async () => {
+      try {
+        const canvas = await html2canvas(captureRef.current, { useCORS: true });
+        await captureScreenshot(canvas);
+      } catch (error) {
+        console.error("Error capturing the screenshot:", error);
+      } finally {
+        setIsButtonVisible(true);
+      }
+    }, 100);
   };
 
   const starData = starP && starP.data ? starP.data : null;
