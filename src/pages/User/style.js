@@ -133,6 +133,7 @@ export const CategoryWrapper = styled.div`
 export const CategoryView = styled.div`
   display: flex;
   flex-wrap: wrap;
+  width: 270px;
   gap: 1rem;
   justify-content: center;
 `;
