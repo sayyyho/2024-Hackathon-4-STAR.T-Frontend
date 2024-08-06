@@ -24,13 +24,13 @@ const SharePage = ({ onBack }) => {
       console.log(res);
       setStarP(res);
     } catch (error) {
-      console.log("..");
+      console.error("Error fetching star data:", error);
     }
   };
 
   useEffect(() => {
     fetchStarData();
-  }, []);
+  }, [starid]);
 
   const handleCapture = async () => {
     setIsButtonVisible(false);
@@ -39,7 +39,7 @@ const SharePage = ({ onBack }) => {
       await captureScreenshot(canvas);
 
     } catch (error) {
-      console.log(error);
+      console.error("Error capturing screenshot:", error);
     } finally {
 
       setIsButtonVisible(true);
@@ -78,8 +78,12 @@ const SharePage = ({ onBack }) => {
               <S.ClearMain>
                 <div className="text">축하합니다!</div>
                 <div className="imgContainer">
-                  <img src={ClearStarPIcon1} />
-                  <img className="icon2" src={ClearStarPIcon2} />
+                  <img src={ClearStarPIcon1} alt="Clear Star Icon 1" />
+                  <img
+                    className="icon2"
+                    src={ClearStarPIcon2}
+                    alt="Clear Star Icon 2"
+                  />
                   <div className="textOverlay">
                     {starData.routines_added_count}회
                   </div>
@@ -87,28 +91,26 @@ const SharePage = ({ onBack }) => {
                 <div className="text">루틴 완료 달성!</div>
               </S.ClearMain>
             </S.ClearCantainr>
-            {
-              <div
-                id="share-button"
-                style={{
-                  visibility: isButtonVisible ? "visible" : "hidden",
-                  width: "100%",
-                  height: "100%",
-                }}
-              >
-                <S.shareContainr>
-                  <S.shareBtn onClick={handleCapture}>
-                    <div className="ImgSave">
-                      이미지 저장하고 공유하기
-                      <img src={shareIcon} />
-                    </div>
-                  </S.shareBtn>
-                  <button className="backBtn" onClick={onBack}>
-                    뒤로가기
-                  </button>
-                </S.shareContainr>
-              </div>
-            }
+            <div
+              id="share-button"
+              style={{
+                visibility: isButtonVisible ? "visible" : "hidden",
+                width: "100%",
+                height: "100%",
+              }}
+            >
+              <S.shareContainr>
+                <S.shareBtn onClick={handleCapture}>
+                  <div className="ImgSave">
+                    이미지 저장하고 공유하기
+                    <img src={shareIcon} alt="Share Icon" />
+                  </div>
+                </S.shareBtn>
+                <button className="backBtn" onClick={() => navigate(-1)}>
+                  뒤로가기
+                </button>
+              </S.shareContainr>
+            </div>
           </div>
         </S.Wrapper>
       </div>
