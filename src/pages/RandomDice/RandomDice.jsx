@@ -161,11 +161,16 @@ export const RandomDice = () => {
           <S.ThrowButton onClick={handleRollClick}>주사위 돌리기</S.ThrowButton>
         ) : (
           <div className="buttons">
-            {!clickCalendarButton && (
-              <button className="Add" onClick={handleAddCalendar}>
-                내 캘린더에 추가
-              </button>
-            )}
+            <button
+              className="Add"
+              style={{
+                display: clickCalendarButton ? block : none,
+              }}
+              onClick={handleAddCalendar}
+            >
+              내 캘린더에 추가
+            </button>
+
             <button className="Again" onClick={handleAgainClick}>
               다시 돌리기
             </button>
@@ -179,15 +184,7 @@ export const RandomDice = () => {
       )}
       {isCheckVisible && (
         <Modal onClose={handleCloseModal}>
-          <CheckUp
-            term={term}
-            // onClose={() => {
-            //   setTimeout(() => {
-            //     setClickCalendarButton(true);
-            //     console.log("clickCalendarButton true");
-            //   }, 0);
-            // }}
-          />
+          <CheckUp term={term} />
         </Modal>
       )}
     </S.Layout>

@@ -31,8 +31,8 @@ const PrivacyContainer = ({
       <img
         src={
           (index === 0 && firstCheck) || (index === 1 && secondCheck)
-            ? IconChecked
-            : IconUnChecked
+            ? IconUnChecked
+            : IconChecked
         }
         alt="Checkbox Icon"
         className="icon"
