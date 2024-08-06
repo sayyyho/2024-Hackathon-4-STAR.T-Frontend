@@ -8,11 +8,8 @@ export const Wrapper = styled.div`
   background-size: cover;
   flex-direction: column;
   background-size: cover;
-  margin-bottom: 5.5rem;
+  padding-bottom: 5.5rem;
 
-  @media (max-height: 700px) {
-    margin-bottom: 7.3rem;
-  }
   .Container {
     min-height: 100%;
     background-image: url(${Back});
@@ -160,6 +157,7 @@ export const shareContainr = styled.div`
   align-items: center;
   margin-top: 1rem;
   font-size: 1rem;
+  margin-bottom: 3rem;
   .backBtn {
     display: flex;
     width: 260px;
