@@ -106,7 +106,10 @@ const StarPage = () => {
             startDay={formatDate(startDay)}
             endDay={formatDate(endDay)}
             term={term}
-            onClose={() => setIsCheckVisible(false)}
+            onClose={() => {
+              setIsCheckVisible(false);
+              window.location.reload();
+            }}
           />
         </Modal>
       )}
