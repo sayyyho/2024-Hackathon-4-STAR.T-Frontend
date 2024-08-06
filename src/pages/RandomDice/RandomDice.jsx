@@ -40,6 +40,7 @@ export const RandomDice = () => {
   });
   const [clickCalendarButton, setClickCalendarButton] = useState(false);
   const calendarRef = useRef(null);
+
   // 화면 크기 조정에 따른 스타일 변경
   useEffect(() => {
     const handleResize = () => {
@@ -165,16 +166,11 @@ export const RandomDice = () => {
           <S.ThrowButton onClick={handleRollClick}>주사위 돌리기</S.ThrowButton>
         ) : (
           <div className="buttons">
-            <button
-              className="Add"
-              style={{
-                display: clickCalendarButton ? block : none,
-              }}
-              onClick={handleAddCalendar}
-            >
-              내 캘린더에 추가
-            </button>
-
+            {!clickCalendarButton && (
+              <button className="Add" onClick={handleAddCalendar}>
+                내 캘린더에 추가
+              </button>
+            )}
             <button className="Again" onClick={handleAgainClick}>
               다시 돌리기
             </button>
@@ -188,7 +184,12 @@ export const RandomDice = () => {
       )}
       {isCheckVisible && (
         <Modal onClose={handleCloseModal}>
-          <CheckUp term={term} />
+          <CheckUp
+            term={term}
+            onClose={() => {
+              setClickCalendarButton(true);
+            }}
+          />
         </Modal>
       )}
     </S.Layout>

@@ -1,4 +1,4 @@
-import React, { useState, forwardRef } from "react";
+import React, { useState, forwardRef, useImperativeHandle } from "react";
 import * as S from "./styled";
 import {
   routineStart,
@@ -12,18 +12,26 @@ import { postRoutineRegister } from "../../apis/register";
 import { format } from "date-fns";
 import { addHours } from "date-fns";
 import { modalStatus } from "@/stores/calendar";
-const setShowModal = useSetRecoilState(modalStatus);
 
-const DateRangeCalendar = forwardRef((ref) => {
+const DateRangeCalendar = forwardRef((props, ref) => {
   const [currentDate, setCurrentDate] = useState(new Date());
   const [selectedStartDate, setSelectedStartDate] =
     useRecoilState(routineStart);
   const [selectedEndDate, setSelectedEndDate] = useRecoilState(routineEnd);
-  const [, setIsCalendarVisible] = useRecoilState(CalendarVisible);
-  const [, setIsCheckVisible] = useRecoilState(CheckVisible);
+  const setIsCalendarVisible = useSetRecoilState(CalendarVisible);
+  const setIsCheckVisible = useSetRecoilState(CheckVisible);
+  const setShowModal = useSetRecoilState(modalStatus);
   const id = useRecoilValue(registerID);
   const timeZone = "Asia/Seoul";
+
   const getZonedDate = (date) => addHours(new Date(date), 9);
+
+  useImperativeHandle(ref, () => ({
+    resetCalendar: () => {
+      setSelectedStartDate(null);
+      setSelectedEndDate(null);
+    },
+  }));
 
   const handleDateClick = (date) => {
     const zonedDate = getZonedDate(date);
@@ -108,7 +116,7 @@ const DateRangeCalendar = forwardRef((ref) => {
       const formattedEndDate = format(selectedEndDate, "yyyy-MM-dd", {
         timeZone,
       });
-      console.log("formatted날짜까지 들어옴");
+
       try {
         const response = await postRoutineRegister(
           formattedStartDate,
@@ -124,7 +132,7 @@ const DateRangeCalendar = forwardRef((ref) => {
             if (window.location.href.includes("theme")) {
               window.location.reload();
             }
-          }, 2000); //
+          }, 2000);
         } else {
           setShowModal(true);
         }
@@ -141,28 +149,14 @@ const DateRangeCalendar = forwardRef((ref) => {
       <S.CalendarHeader>
         <S.Headertitle>목표기간설정</S.Headertitle>
         <S.HeaderContainer>
-          <S.CalendarHeaderButton onClick={() => handleMonthChange(-1)}>
+          <S.PrevButton onClick={() => handleMonthChange(-1)}>
             &lt;
-          </S.CalendarHeaderButton>
-          <S.CalendarHeaderTitle>
-            {currentDate.toLocaleString("default", { month: "long" })}
-          </S.CalendarHeaderTitle>
-          <S.CalendarHeaderButton onClick={() => handleMonthChange(1)}>
-            &gt;
-          </S.CalendarHeaderButton>
+          </S.PrevButton>
+          <S.CurrentMonth>{format(currentDate, "yyyy년 MM월")}</S.CurrentMonth>
+          <S.NextButton onClick={() => handleMonthChange(1)}>&gt;</S.NextButton>
         </S.HeaderContainer>
       </S.CalendarHeader>
-
-      <S.CalendarBody>
-        <S.DayName style={{ color: "#F00" }}>일</S.DayName>
-        <S.DayName>월</S.DayName>
-        <S.DayName>화</S.DayName>
-        <S.DayName>수</S.DayName>
-        <S.DayName>목</S.DayName>
-        <S.DayName>금</S.DayName>
-        <S.DayName style={{ color: "#78A1B5" }}>토</S.DayName>
-        {renderDays()}
-      </S.CalendarBody>
+      <S.DaysContainer>{renderDays()}</S.DaysContainer>
       <S.ConfirmButton onClick={handleConfirm}>확인</S.ConfirmButton>
     </S.CalendarContainer>
   );
