@@ -23,7 +23,7 @@ export const captureScreenshot = async (canvas) => {
     }
   } catch (error) {
     console.log("Sharing failed", error);
-    alert("공유에 실패했습니다. 다시 시도해주세요.");
+    alert("현재 MDN에서 제공하는 Web Share API는 애플 기기 미지원 상태입니다.");
   } finally {
     // Show the share button again after sharing
     if (shareButton) shareButton.style.display = "block";
