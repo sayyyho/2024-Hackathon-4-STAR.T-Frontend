@@ -39,6 +39,7 @@ const SharePage = ({ onBack }) => {
       await captureScreenshot(canvas);
 
     } catch (error) {
+      console.log(error);
     } finally {
 
       setIsButtonVisible(true);
