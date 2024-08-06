@@ -9,7 +9,6 @@ export const captureScreenshot = async (canvas) => {
     const dataUrl = canvas.toDataURL("image/png");
     const blob = await fetch(dataUrl).then((res) => res.blob());
 
-
     // Use Web Share API if available
     if (navigator.share) {
       await navigator.share({
@@ -27,6 +26,5 @@ export const captureScreenshot = async (canvas) => {
   } finally {
     // Show the share button again after sharing
     if (shareButton) shareButton.style.display = "block";
-
   }
 };
